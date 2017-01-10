@@ -1,0 +1,18 @@
+{
+    "contents" : "install.packages('base64enc')\ninstall.packages('bit64')\ninstall.packages(\"twitteR\")\ninstall.packages(\"RCurl\")\ninstall.packages('tm')\ninstall.packages('wordcloud')\ninstall.packages('NLP')\ninstall.packages('RColorBrewer')\n\n\nrequire(twitteR)\nrequire(RCurl)\nrequire(NLP)\nrequire(RColorBrewer)\nrequire(tm)\nrequire(wordcloud)\n\nconsumer_key <- 'O3zJZJuVQccUMMTaC4U0zF40g'\nconsumer_secret <- 'rTNNF5gmAJEncL9DXHvpOHkij2CqEGcidmure8NZcJL8h3cKFs'\naccess_token <- '3214803982-TDvvHqPwOeU9bsYD1x6x58z9M0da7cyLnOEOEsi'\naccess_secret <- '2fGSzHWdwl9QQmZjxoFrR21WnOvZx5dQJADn2E6SlMgBI'\nsetup_twitter_oauth(consumer_key, consumer_secret, access_token, access_secret)\n\ntwitts <- searchTwitter(\"docker\", lang='en', n=500, resultType = 'recent')\n#twitts[1:3]\n#class(twitts)\ntwitts_text <- sapply(twitts, function(x) x$getText())\n#str(twitts_text)\n\ntwitts_corpus <- Corpus(VectorSource(twitts_text))\ninspect(twitts_corpus[1])\n\ntwitts_clean <- tm_map(twitts_corpus, removePunctuation)\ntwitts_clean <- tm_map(twitts_clean, content_transformer(tolower))\n#twitts_clean <- tm_map(twitts_clean, removeWords, stopwords('english')) \ntwitts_clean <- tm_map(twitts_clean, removeNumbers)\ntwitts_clean <- tm_map(twitts_clean, stripWhitespace)\ntwitts_clean <- tm_map(twitts_clean, removeWords, c('https', 'htppsco', 'the', 'for', 'from', 'and'))\n\nwordcloud(twitts_clean, random.order = F, max.words = 10, scale = c(7.5, 2.5), col=rainbow(50))\n\n\n",
+    "created" : 1444084259862.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "583119701",
+    "id" : "499EC936",
+    "lastKnownWriteTime" : 1466952977,
+    "path" : "~/RStudioWD/Twitter_Datamining/main.r",
+    "project_path" : "main.r",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
